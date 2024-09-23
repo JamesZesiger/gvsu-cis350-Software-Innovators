@@ -6,7 +6,7 @@ Project description (~1 paragraph)
 
 * Member 1 (Role 1, Role 2)
 * Member 2 (Role 3, Role 4)
-* Member 3 (Role 5, Role 6)
+* [Connor Valley](https://github.com/connor-valley1/CIS350-HW2-VALLEY)
 
 ## Prerequisites
 
