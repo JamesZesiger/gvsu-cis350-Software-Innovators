@@ -4,23 +4,26 @@ Hold a team meeting at least once a week in some format.  Copy the following tem
 
 ## Meeting minutes template
 
-Team name:
+Team name:   Software Innovators	
 
-Members present:
+Members present:   Preston Speidel, James Zesiger, Connor Valley
 
-Date:
+Date:	9/17/2024
 
-Time:
+Time:	2:30-3:00
 
 Discussion points: 
 
-*
-*
-*
+*	GitHub repo structure
+*	Previous GitHub examples
+*	Jira
+*	Project expectations
+
 
 Goals for next week (include responsibilities)
 
-*
-*
-*
+*	Set responsibilities and roles 
+*	Begin research and start development
+
+
 
