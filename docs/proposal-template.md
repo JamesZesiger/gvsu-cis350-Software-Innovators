@@ -1,6 +1,6 @@
-Team name:
+Team name: Software Innovators
 
-Team members:
+Team members: Preston Speidel, Connor Valley, James Zesiger
 
 # Introduction
 
