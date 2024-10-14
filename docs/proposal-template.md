@@ -26,6 +26,7 @@ We plan to use Agile development and a Kanban board as our main method for the p
 # Estimated Timeline
 
 (Figure out what your major milestones for this project will be, including how long you anticipate it *may* take to reach that point)
+[Gantt Chart Link](https://docs.google.com/spreadsheets/d/1pgALWz4wyGoIgindxdqpWPSg3jJGDA4yqUpgb96LZ6w/edit?usp=sharing)
 
 # Anticipated Problems
 
