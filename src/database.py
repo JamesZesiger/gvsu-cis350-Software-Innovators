@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-# MongoDB connection string (replace with your own if needed)
+# MongoDB connection string
 client = MongoClient("mongodb+srv://budgetUser:securePassword123@balancebuddy.r463f.mongodb.net/?retryWrites=true&w=majority&appName=BalanceBuddy")
 db = client["BalanceBuddy"]
 users_collection = db["users"]
@@ -28,7 +28,7 @@ def login_user(username, password):
 
 # Test the functions
 # Register a test user
-#register_user("testuser", "testpassword123")
+register_user("testuser", "testpassword123")
 
 # Attempt to login with the same credentials
 login_user("testuser", "testpassword123")
