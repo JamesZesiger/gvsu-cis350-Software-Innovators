@@ -1,4 +1,5 @@
 import pygame
+import pygame_gui
 import sys
 from button import Button
 
@@ -9,6 +10,8 @@ pygame.init()
 width, height = 768, 960
 screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption("Budgeting App GUI Mockup")
+clock = pygame.time.Clock()
+manager = pygame_gui.UIManager((width, height), 'theme.json')
 
 # setup colors for screen elements
 dock_color = (37, 58, 45)
@@ -25,6 +28,7 @@ login_font = pygame.font.Font(font_path, 76)
 signup_font = pygame.font.Font(font_path, 36)
 button_font = pygame.font.Font(font_path, 24)
 return_text_font = pygame.font.Font(font_path, 18)
+small_text_font = pygame.font.Font(font_path, 18)
 
 # setup images
 user_icon = pygame.image.load("images/user_icon.png")
@@ -32,6 +36,10 @@ user_icon = pygame.transform.scale(user_icon, (40,40))
 settings_icon = pygame.image.load("images/settings_icon.png")
 settings_icon = pygame.transform.scale(settings_icon, (40,40))
 
+
+def clear_ui(elements):
+    for element in elements:
+        element.kill()
 
 # utility functions:
 def drawDock(current):
@@ -112,16 +120,13 @@ def drawHeader(text):
     # screen.blit(user_icon, (10,5))
     # screen.blit(settings_icon, (width-50, 5))
 
-    user_button = Button(image=user_icon, pos=(30,25), text_input="", font=button_font, base_color=(0,0,0))
-    user_button.update(screen)
-
     settings_button = Button(image=settings_icon, pos=(width-30,25), text_input="", font=button_font, base_color=(0,0,0))
     settings_button.update(screen)
 
-    return user_button, settings_button
+    return settings_button
 
 
-# screen functions:
+# main screen functions:
 def dashboard():
     page_title = "My Dashboard"
     pygame.display.set_caption(page_title)
@@ -132,7 +137,7 @@ def dashboard():
         # fill in background
         screen.fill(background_color)
 
-        user_button, settings_button = drawHeader(page_title)
+        settings_button = drawHeader(page_title)
 
         # setup modules
         # pygame.draw.rect(screen, module_color, (30, 80, width-60, 225))
@@ -154,10 +159,8 @@ def dashboard():
                     income()
                 elif goals_item_button.checkForInput(dash_mouse_pos):
                     goals()
-                elif user_button.checkForInput(dash_mouse_pos):
-                    userMenu(page_title)
                 elif settings_button.checkForInput(dash_mouse_pos):
-                    settings()
+                    settings(page_title)
 
         pygame.display.update()
 
@@ -171,7 +174,7 @@ def expenses():
         # fill in background
         screen.fill(background_color)
 
-        user_button, settings_button = drawHeader(page_title)
+        settings_button = drawHeader(page_title)
         
         dash_item_button, expenses_item_button, income_item_button, goals_item_button = drawDock("expenses")
         
@@ -188,10 +191,8 @@ def expenses():
                     income()
                 elif goals_item_button.checkForInput(dash_mouse_pos):
                     goals()
-                elif user_button.checkForInput(dash_mouse_pos):
-                    userMenu(page_title)
                 elif settings_button.checkForInput(dash_mouse_pos):
-                    settings()
+                    settings(page_title)
 
         pygame.display.update()
 
@@ -205,7 +206,7 @@ def income():
         # fill in background
         screen.fill(background_color)
 
-        user_button, settings_button = drawHeader(page_title)
+        settings_button = drawHeader(page_title)
         
         dash_item_button, expenses_item_button, income_item_button, goals_item_button = drawDock("income")
         
@@ -222,10 +223,8 @@ def income():
                     print("already on income page")
                 elif goals_item_button.checkForInput(dash_mouse_pos):
                     goals()
-                elif user_button.checkForInput(dash_mouse_pos):
-                    userMenu(page_title)
                 elif settings_button.checkForInput(dash_mouse_pos):
-                    settings()
+                    settings(page_title)
 
         pygame.display.update()
 
@@ -239,7 +238,7 @@ def goals():
         # fill in background
         screen.fill(background_color)
 
-        user_button, settings_button = drawHeader(page_title)
+        settings_button = drawHeader(page_title)
         
         dash_item_button, expenses_item_button, income_item_button, goals_item_button = drawDock("goals")
         
@@ -256,18 +255,40 @@ def goals():
                     income()
                 elif goals_item_button.checkForInput(dash_mouse_pos):
                     print("already on goals page")
-                elif user_button.checkForInput(dash_mouse_pos):
-                    userMenu(page_title)
                 elif settings_button.checkForInput(dash_mouse_pos):
-                    settings()
+                    settings(page_title)
 
         pygame.display.update()
+
+# login & signup screens
+def create_login_elements():
+    welcome_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((50, (350/2)-50), (668, 100)), manager=manager, text="Welcome to", object_id="title_label")
+    balancebuddy_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((50, 50 + (350/2)), (668, 100)), manager=manager, text="BalanceBuddy", object_id="title_label")
+
+    email_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2) - 175, 460), (200, 50)), manager=manager, text="Email:", object_id="email_label")
+    email_text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(((width/2)-100, 500), (200, 50)), manager=manager, object_id="email_input")
+
+    password_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2 - 160), 585), (200, 50)), manager=manager, text="Password:", object_id="password_label")
+    password_text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(((width/2)-100, 625), (200, 50)), manager=manager, object_id="password_input")
+    password_text_input.set_text_hidden(True)
+
+    login_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((width - 230, height - 90), (200, 60)), text="Login", manager=manager, object_id="login_button")
+
+    signup_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((30, height - 90), (200, 60)), text="Sign Up", manager=manager, object_id="signup_button")
+
+    error_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((214, 620), (300, 50)), manager=manager, text="", object_id="error_label")
+
+    return [welcome_label, balancebuddy_label, email_label, email_text_input, password_label, password_text_input, login_button, signup_button, error_label]
 
 def login():
     pygame.display.set_caption("Login Screen")
 
+    current_elements = create_login_elements()
+
     # game loop
     while True:
+        ui_refresh_rate = clock.tick(60)/1000
+
         login_mouse_pos = pygame.mouse.get_pos()
 
         # set background color
@@ -276,62 +297,66 @@ def login():
         # setup login screen background block
         pygame.draw.rect(screen, dock_color, (50, 50, 668, 350))
 
-        # setup login screen title
-        welcome_text = login_font.render("Welcome to", True, text_color)
-        balance_buddy_text = login_font.render("BalanceBuddy", True, text_color)
-        
-        text_rect_bb = balance_buddy_text.get_rect()
-        text_rect_wt = welcome_text.get_rect()
+        # setup email and password borders
+        pygame.draw.rect(screen, dock_option_color, ((width/2)-102, 498, 204, 54))
+        pygame.draw.rect(screen, dock_option_color, ((width/2)-102, 623, 204, 54))
 
-        textwt_x_pos = 50 + ((668 - text_rect_wt.width) // 2)
-        textwt_y_pos = 50 + ((350 - text_rect_wt.height) // 2) - (text_rect_bb.height // 2)
-
-        textbb_x_pos = 50 + ((668 - text_rect_bb.width) // 2)
-        textbb_y_pos = 50 + ((350 - text_rect_bb.height) // 2) + (text_rect_wt.height // 2)
-
-        screen.blit(welcome_text, (textwt_x_pos, textwt_y_pos))
-        screen.blit(balance_buddy_text, (textbb_x_pos, textbb_y_pos))
-
-
-        # INPUT TEXT BOXES WILL GO HERE
-
-
-        # setup login button
-        pygame.draw.rect(screen, dock_option_color, (width-230, height-90, 200, 60))
-
-        textlgn_x_pos = (width-230) + (200//2)
-        textlgn_y_pos = (height-90) + (60//2)
-
-        login_button = Button(image=None, pos=(textlgn_x_pos, textlgn_y_pos), text_input="Login", font=button_font, base_color=text_color)
-        login_button.update(screen)
-
-        # setup sign up button
-        pygame.draw.rect(screen, dock_option_color, (30, height-90, 200, 60))
-
-        textsu_x_pos = (30) + (200//2)
-        textsu_y_pos = (height-90) + (60//2)
-
-        signup_button = Button(image=None, pos=(textsu_x_pos, textsu_y_pos), text_input="Sign Up", font=button_font, base_color=text_color)
-        signup_button.update(screen)
-
-        # check for exit event
+        # event loop
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if login_button.checkForInput(login_mouse_pos):
-                    dashboard()
-                if signup_button.checkForInput(login_mouse_pos):
-                    signUp()
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == current_elements[6]:
+                        # check if login is valid
+                        clear_ui(current_elements)
+                        dashboard()
+                    elif event.ui_element == current_elements[7]:
+                        clear_ui(current_elements)
+                        signUp()
+            
+            manager.process_events(event)
+        
+        manager.update(ui_refresh_rate)
+
+        manager.draw_ui(screen)
 
         pygame.display.update()
+
+def create_signup_elements():
+    title_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((50, 50), (668, 100)), manager=manager, text="Get Started With BalanceBuddy", object_id="title_label_signup")
+
+    name_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2)-270, 210), (300, 50)), manager=manager, text="Name:", object_id="name_label")
+    name_text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(((width/2)-150, 250), (300, 50)), manager=manager, object_id="name_input")
+
+    email_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2)-270, 335), (300, 50)), manager=manager, text="Email:", object_id="email_label")
+    email_text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(((width/2)-150, 375), (300, 50)), manager=manager, object_id="email_input")
+
+    password_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2)-255, 460), (300, 50)), manager=manager, text="Password:", object_id="password_label")
+    password_text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(((width/2)-150, 500), (300, 50)), manager=manager, object_id="password_input")
+    password_text_input.set_text_hidden(True)
+
+    confirm_password_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2)-220, 585), (300, 50)), manager=manager, text="Confirm Password:", object_id="password_label")
+    confirm_password_text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(((width/2)-150, 625), (300, 50)), manager=manager, object_id="password_input")
+    confirm_password_text_input.set_text_hidden(True)
+
+    create_account_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((width - 230, height - 90), (200, 60)), text="Create Account", manager=manager, object_id="create_account_button")
+
+    return_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((0, height - 150), (265, 100)), manager=manager, text="Already have an account?", object_id="return_label")
+    login_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((30, height - 90), (200, 60)), text="Login", manager=manager, object_id="login_button")
+
+    return [title_label, name_label, name_text_input, email_label, email_text_input, password_label, password_text_input, confirm_password_label, confirm_password_text_input, create_account_button, login_button, return_label]
 
 def signUp():
     pygame.display.set_caption("Sign Up Screen")
 
+    current_elements = create_signup_elements()
+
     # game loop
     while True:
+        ui_refresh_rate = clock.tick(60)/1000
+
         signup_mouse_pos = pygame.mouse.get_pos()
 
         # set background color
@@ -340,78 +365,61 @@ def signUp():
         # setup login screen background block
         pygame.draw.rect(screen, dock_color, (50, 50, 668, 100))
 
-        # setup login screen title
-        sign_up_text = signup_font.render("Get Started With BalanceBuddy", True, text_color)
-        
-        text_rect = sign_up_text.get_rect()
-
-        text_x_pos = 50 + ((668 - text_rect.width) // 2)
-        text_y_pos = 50 + ((100 - text_rect.height) // 2)
-
-        screen.blit(sign_up_text, (text_x_pos, text_y_pos))
-
-
-        # INPUT TEXT BOXES WILL GO HERE
-
-
-        # setup create account button
-        pygame.draw.rect(screen, dock_option_color, ((width/2)-100, height-280, 200, 60))
-
-        textca_x_pos = ((width/2) - 100) + (200//2)
-        textca_y_pos = (height-280) + (60//2)
-
-        create_account_button = Button(image=None, pos=(textca_x_pos, textca_y_pos), text_input="Create Account", font=button_font, base_color=text_color)
-        create_account_button.update(screen)
-
-        return_text = return_text_font.render("Already have an account?", True, (85, 0, 0))
-        textrt_rect = return_text.get_rect()
-
-        textrt_x_pos = (width/2) - (textrt_rect.width//2)
-        textrt_y_pos = (height-150)
-
-        screen.blit(return_text, (textrt_x_pos, textrt_y_pos))
-
-        # setup login button
-        pygame.draw.rect(screen, dock_option_color, ((width/2)-100, height-120, 200, 60))
-
-        textlgn_x_pos = ((width/2) - 100) + (200//2)
-        textlgn_y_pos = (height-120) + (60//2)
-
-        login_button = Button(image=None, pos=(textlgn_x_pos, textlgn_y_pos), text_input="Login", font=button_font, base_color=text_color)
-        login_button.update(screen)
+        # setup input box borders
+        pygame.draw.rect(screen, dock_option_color, ((width/2)-152, 248, 304, 54))
+        pygame.draw.rect(screen, dock_option_color, ((width/2)-152, 373, 304, 54))
+        pygame.draw.rect(screen, dock_option_color, ((width/2)-152, 498, 304, 54))
+        pygame.draw.rect(screen, dock_option_color, ((width/2)-152, 623, 304, 54))
 
         # check for exit event
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if create_account_button.checkForInput(signup_mouse_pos):
-                    # create account using input data
-                    dashboard()
-                if login_button.checkForInput(signup_mouse_pos):
-                    login()
+            if event.type == pygame.USEREVENT:
+                if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == current_elements[9]:
+                        # check if login is valid
+                        clear_ui(current_elements)
+                        dashboard()
+                    elif event.ui_element == current_elements[10]:
+                        clear_ui(current_elements)
+                        login()
+
+            manager.process_events(event)
+
+        manager.update(ui_refresh_rate)
+
+        manager.draw_ui(screen)
 
         pygame.display.update()
 
 
-# menu functions
-def userMenu(current):
-    # print("user menu")
+# settings menu
+def settings(current):
     while True:
-
-        user_button, settings_button = drawHeader(current)
+        settings_button = drawHeader(current)
 
         menu_mouse_pos = pygame.mouse.get_pos()
 
-        pygame.draw.rect(screen, dock_color, (10, 60, 250, height-110))
+        pygame.draw.rect(screen, dock_color, (width-310, 60, 300, height-160))
+
+        user_text = small_text_font.render("User: Connor Valley", True, text_color)
+        text_rect = user_text.get_rect()
+
+        text_x_pos = (width-310 + (300 - text_rect.width) // 2) 
+        text_y_pos = (60 + (text_rect.height) // 2)
+
+        screen.blit(user_text, (text_x_pos, text_y_pos))
+
+        # logout button
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if user_button.checkForInput(menu_mouse_pos):
+                if settings_button.checkForInput(menu_mouse_pos):
                     if (current == "My Dashboard"):
                         dashboard()
                     elif (current == "Expenses Tracker/Input"):
@@ -420,11 +428,9 @@ def userMenu(current):
                         income()
                     elif (current == "Goal Progress & Setup"):
                         goals()
+                
 
         pygame.display.update()
-
-def settings():
-    print("settings")
 
 
 # start the app on the login page
