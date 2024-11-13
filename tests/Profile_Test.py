@@ -41,12 +41,12 @@ class Test_User_Profile(unittest.TestCase):
     def test_expense(self):
         user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
         user.add_expenses("gas",51.75)
-        self.assertEqual(user.expenses,{date.today():{"gas":51.75}})
+        self.assertEqual(user.expenses,{date.today().strftime("%m/%d/%y"):{"gas":51.75}})
         user.add_expenses("loan",256.88)
-        self.assertEqual(user.expenses,{date.today():{"gas":51.75,"loan":256.88}})
-        user.remove_expenses(date.today(),("gas"))
-        self.assertEqual(user.expenses,{date.today():{"loan":256.88}})
-        user.remove_expenses(date.today())
+        self.assertEqual(user.expenses,{date.today().strftime("%m/%d/%y"):{"gas":51.75,"loan":256.88}})
+        user.remove_expenses(date.today().strftime("%m/%d/%y"),("gas"))
+        self.assertEqual(user.expenses,{date.today().strftime("%m/%d/%y"):{"loan":256.88}})
+        user.remove_expenses(date.today().strftime("%m/%d/%y"))
         self.assertEqual(user.expenses,{})
 
     def test_experience(self):
@@ -58,5 +58,15 @@ class Test_User_Profile(unittest.TestCase):
         user.remove_experience(75)
         self.assertEqual(user.experience, 975)
 
+    def test_income(self):
+        user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
+        user.income = {date.today().strftime("%m/%d/%y"):{"work":250.00,"sales":25.25}}
+        self.assertEqual(user.income,{date.today().strftime("%m/%d/%y"):{"work":250.00,"sales":25.25}})
+        user.add_income("tax return",143.27)
+        self.assertEqual(user.income,{date.today().strftime("%m/%d/%y"):{"work":250.00,"sales":25.25,"tax return":143.27}})
+        user.remove_income("11/13/24","work")
+        self.assertEqual(user.income,{date.today().strftime("%m/%d/%y"):{"sales":25.25,"tax return":143.27}})
+        user.remove_income("11/13/24")
+        self.assertEqual(user.income,{})
 if __name__ == '__main__':
     unittest.main()
