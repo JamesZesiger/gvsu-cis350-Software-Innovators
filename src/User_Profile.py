@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 class LengthError(Exception):
     """
@@ -148,6 +148,21 @@ class User:
         else: 
             del self.__expenses[date][tag]
 
+    def sum_of_current_expenses(self):
+        """
+        method that calculates total expenses of current week (sunday - saturday)
+        Returns:
+            - total
+        """
+        total = 0
+        day_pointer = date.today() - timedelta(days = date.today().isoweekday())        # sets day_pointer to sunday
+        for x in range(0,7):                                                            # iterates for 7 days
+            if day_pointer.strftime("%m/%d/%y") in self.__expenses:                       # checks if date is in expense dict
+                for value in self.__expenses[day_pointer.strftime("%m/%d/%y")].items():   # iterates though expense values at day_pointer location
+                    total+=float(value[1])              
+            day_pointer += timedelta(days = 1)                                          # increments day_pointer by 1 day
+        return round(total,2)                                                           # returns total rounded to nearest hundreth 
+
 
     @property
     def experience(self):
@@ -220,7 +235,22 @@ class User:
             - date: date to remove entry from
             - tag (optional): label to remove 
         """
-        if not tag: 
+        if not tag:                         # if tag not provided delete full entry at date
             del self.__income[date]
-        else: 
+        else:                               # if tag provided delete entry at tag
             del self.__income[date][tag]
+            
+    def sum_of_current_income(self):
+        """
+        method that calculates total income of current week (sunday - saturday)
+        Returns:
+            - total
+        """
+        total = 0
+        day_pointer = date.today() - timedelta(days = date.today().isoweekday())        # sets day_pointer to sunday
+        for x in range(0,7):                                                            # iterates for 7 days
+            if day_pointer.strftime("%m/%d/%y") in self.__income:                       # checks if date is in income dict
+                for value in self.__income[day_pointer.strftime("%m/%d/%y")].items():   # iterates though income values at day_pointer location
+                    total+=float(value[1])              
+            day_pointer += timedelta(days = 1)                                          # increments day_pointer by 1 day
+        return round(total,2)                                                           # returns total rounded to nearest hundreth 
