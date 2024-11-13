@@ -45,6 +45,7 @@ class User:
         self.__password = str(password)
         self.__expenses = {}
         self.__experience = 0
+        self.__income = {}
 
     @property
     def username(self):
@@ -133,8 +134,8 @@ class User:
             - TypeError
         """
         if type(expense)!= float: raise TypeError            # raises TypeError if expense is not a float
-        if date.today() not in self.__expenses: self.__expenses[date.today()] = {}
-        self.__expenses[date.today()][tag] = expense              # adds expense to __expenses with todays date as key
+        if date.today().strftime("%m/%d/%y") not in self.__expenses: self.__expenses[date.today().strftime("%m/%d/%y")] = {}
+        self.__expenses[date.today().strftime("%m/%d/%y")][tag] = expense              # adds expense to __expenses with todays date as key
 
     def remove_expenses(self, date, tag = None):
         """
@@ -180,3 +181,46 @@ class User:
             - experience: int value to remove from user experience
         """
         self.__experience -= experience
+
+
+    @property
+    def income(self):
+        """
+        Getter for __income
+        Returns: __income
+        """
+        return self.__income
+
+    @income.setter
+    def income(self, new_income: dict):
+        """
+        Setter for __income
+        Parameters:
+            - new_income
+        """
+        self.__income = new_income
+
+    def add_income(self, tag: str, income:float):
+        """
+        method that adds income entry
+        Parameters:
+            - tag: label for income 
+            - income: new income amount 
+        Raises:
+            - TypeError
+        """
+        if type(income)!= float: raise TypeError            # raises TypeError if expense is not a float
+        if date.today().strftime("%m/%d/%y") not in self.__income: self.__income[date.today().strftime("%m/%d/%y")] = {}
+        self.__income[date.today().strftime("%m/%d/%y")][tag] = income           # adds expense to __expenses with todays date as key
+
+    def remove_income(self, date, tag = None):
+        """
+        method that removes an entry from a specified date
+        Parameters:
+            - date: date to remove entry from
+            - tag (optional): label to remove 
+        """
+        if not tag: 
+            del self.__income[date]
+        else: 
+            del self.__income[date][tag]
