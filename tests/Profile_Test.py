@@ -40,12 +40,14 @@ class Test_User_Profile(unittest.TestCase):
 
     def test_expense(self):
         user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
-        user.expenses = {"10/28/2024":1024.38,"10/29/2024":0.84}
-        self.assertEqual(user.expenses,{"10/28/2024":1024.38,"10/29/2024":0.84})
-        user.add_expenses(84.99)
-        self.assertEqual(user.expenses, {"10/28/2024": 1024.38, "10/29/2024": 0.84, date.today():84.99})
+        user.add_expenses("gas",51.75)
+        self.assertEqual(user.expenses,{date.today():{"gas":51.75}})
+        user.add_expenses("loan",256.88)
+        self.assertEqual(user.expenses,{date.today():{"gas":51.75,"loan":256.88}})
+        user.remove_expenses(date.today(),("gas"))
+        self.assertEqual(user.expenses,{date.today():{"loan":256.88}})
         user.remove_expenses(date.today())
-        self.assertEqual(user.expenses, {"10/28/2024": 1024.38, "10/29/2024": 0.84})
+        self.assertEqual(user.expenses,{})
 
     def test_experience(self):
         user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
