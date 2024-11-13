@@ -124,7 +124,7 @@ class User:
         """
         self.__expenses = new_expenses
 
-    def add_expenses(self, expense:float):
+    def add_expenses(self, tag: str, expense:float):
         """
         method that adds expense entry
         Parameters:
@@ -133,15 +133,20 @@ class User:
             - TypeError
         """
         if type(expense)!= float: raise TypeError            # raises TypeError if expense is not a float
-        self.__expenses[date.today()] = expense              # adds expense to __expenses with todays date as key
+        if date.today() not in self.__expenses: self.__expenses[date.today()] = {}
+        self.__expenses[date.today()][tag] = expense              # adds expense to __expenses with todays date as key
 
-    def remove_expenses(self, date):
+    def remove_expenses(self, date, tag = None):
         """
         method that removes an entry from a specified date
         Parameters:
             - date: date to remove entry from
         """
-        del self.__expenses[date]
+        if not tag: 
+            del self.__expenses[date]
+        else: 
+            del self.__expenses[date][tag]
+
 
     @property
     def experience(self):
