@@ -1,6 +1,6 @@
 import User_Profile
 import unittest
-from datetime import date
+from datetime import date, timedelta
 
 class Test_User_Profile(unittest.TestCase):
     def test_create_user_good(self):
@@ -49,6 +49,28 @@ class Test_User_Profile(unittest.TestCase):
         user.remove_expenses(date.today().strftime("%m/%d/%y"))
         self.assertEqual(user.expenses,{})
 
+    def test_sum_expense(self):
+        user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
+        m = date.today() - timedelta(days = date.today().isoweekday())
+        t = m + timedelta(days = 1)
+        w = t + timedelta(days = 1)
+        th = w + timedelta(days = 1)
+        f = th + timedelta(days = 1)
+        sa = f + timedelta(days = 1)
+        su = sa + timedelta(days = 1)
+        user.expenses = {m.strftime("%m/%d/%y"):{"gift":100.00,"netflix":25.75},
+                       t.strftime("%m/%d/%y"):{"groceries":150.70},
+                       w.strftime("%m/%d/%y"):{"fast food":75.13,"tax":2.03},
+                       th.strftime("%m/%d/%y"):{"rent":201.20},
+                       f.strftime("%m/%d/%y"):{"amazon":10.80},
+                       sa.strftime("%m/%d/%y"):{"amazon":3.00},
+                       su.strftime("%m/%d/%y"):{"spotify":5.00}}
+        total = user.sum_of_current_expenses()
+        self.assertEqual(total, 573.61,"expenses sum, full week")
+        user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
+        total = user.sum_of_current_expenses()
+        self.assertEqual(total, 0, "expenses sum: empty dict")
+
     def test_experience(self):
         user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
         user.experience = 1000
@@ -68,5 +90,30 @@ class Test_User_Profile(unittest.TestCase):
         self.assertEqual(user.income,{date.today().strftime("%m/%d/%y"):{"sales":25.25,"tax return":143.27}})
         user.remove_income("11/13/24")
         self.assertEqual(user.income,{})
+
+    def test_sum_income(self):
+        user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
+        m = date.today() - timedelta(days = date.today().isoweekday())
+        t = m + timedelta(days = 1)
+        w = t + timedelta(days = 1)
+        th = w + timedelta(days = 1)
+        f = th + timedelta(days = 1)
+        sa = f + timedelta(days = 1)
+        su = sa + timedelta(days = 1)
+        user.income = {m.strftime("%m/%d/%y"):{"Pay":100.00,"sales":25.75},
+                       t.strftime("%m/%d/%y"):{"Pay":150.70},
+                       w.strftime("%m/%d/%y"):{"Pay":75.13,"sales":2.03},
+                       th.strftime("%m/%d/%y"):{"Pay":201.20},
+                       f.strftime("%m/%d/%y"):{"Pay":10.80},
+                       sa.strftime("%m/%d/%y"):{"sales":3.00},
+                       su.strftime("%m/%d/%y"):{"sales":5.00}}
+        total = user.sum_of_current_income()
+        self.assertEqual(total, 573.61,"income sum, full week")
+        user = User_Profile.User("James", "zesigeja@mail.gvsu.edu", "password")
+        total = user.sum_of_current_income()
+        self.assertEqual(total, 0, "income sum: empty dict")
+
+
+
 if __name__ == '__main__':
     unittest.main()
