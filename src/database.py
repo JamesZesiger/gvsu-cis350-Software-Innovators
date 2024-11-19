@@ -1,5 +1,117 @@
 from pymongo import MongoClient
 from datetime import datetime
+from User_Profile import User
+
+# MongoDB connection string
+client = MongoClient("mongodb+srv://budgetUser:securePassword123@balancebuddy.r463f.mongodb.net/?retryWrites=true&w=majority&appName=BalanceBuddy")
+db = client["BalanceBuddy"]
+users_collection = db["users"]
+
+# Function to register a new user
+def register_user(email, password, user_name):
+    """
+    Registers a new user in the database.
+    """
+    if users_collection.find_one({"email": email}):
+        print("Email already exists. Choose a different email.")
+        return None
+
+    user_data = {
+        "email": email,
+        "password": password,
+        "user_name": user_name,
+        "experience_points": 0,
+        "expenses": [],
+        "income": []
+    }
+    users_collection.insert_one(user_data)
+    print("User registered successfully!")
+    return user_data
+
+# Function to login a user and initialize the User object
+def login_user(email, password):
+    """
+    Logs in a user by checking the database. If valid, returns a populated User object.
+    """
+    user_data = users_collection.find_one({"email": email, "password": password})
+    if user_data:
+        print("Login successful!")
+
+        # Create a User object and populate it using setters
+        user = User(
+            username=user_data["user_name"],
+            email=user_data["email"],
+            password=user_data["password"]
+        )
+        user.experience = user_data.get("experience_points", 0)
+        user.expenses = {expense["date"]: {expense["description"]: expense["amount"]} for expense in user_data.get("expenses", [])}
+        user.income = {income["date"]: {income["description"]: income["amount"]} for income in user_data.get("income", [])}
+
+        return user
+    else:
+        print("Invalid credentials.")
+        return None
+
+# Function to update user data in the database
+def update_user_data(user):
+    """
+    Updates the user data in the database based on the current state of the User object.
+    """
+    user_data = {
+        "user_name": user.username,
+        "email": user.email,
+        "password": user.password,
+        "experience_points": user.experience,
+        "expenses": [{"description": desc, "amount": amt, "date": date} 
+                     for date, daily_expenses in user.expenses.items() 
+                     for desc, amt in daily_expenses.items()],
+        "income": [{"description": desc, "amount": amt, "date": date} 
+                   for date, daily_income in user.income.items() 
+                   for desc, amt in daily_income.items()]
+    }
+    users_collection.update_one(
+        {"email": user.email},
+        {"$set": user_data}
+    )
+    print("User data updated successfully!")
+
+# Function to get all expenses for a user
+def get_all_expenses(user):
+    """
+    Retrieves all expenses for a user from the database and updates the User object.
+    """
+    user_data = users_collection.find_one({"email": user.email})
+    if user_data:
+        expenses = user_data.get("expenses", [])
+        user.expenses = {expense["date"]: {expense["description"]: expense["amount"]} for expense in expenses}
+        print(f"Updated expenses for user '{user.username}' from database.")
+    else:
+        print("User not found.")
+
+# Function to get all income for a user
+def get_all_income(user):
+    """
+    Retrieves all income for a user from the database and updates the User object.
+    """
+    user_data = users_collection.find_one({"email": user.email})
+    if user_data:
+        income = user_data.get("income", [])
+        user.income = {income_entry["date"]: {income_entry["description"]: income_entry["amount"]} for income_entry in income}
+        print(f"Updated income for user '{user.username}' from database.")
+    else:
+        print("User not found.")
+
+
+
+
+
+
+
+
+
+"""
+from pymongo import MongoClient
+from datetime import datetime
 
 # MongoDB connection string
 client = MongoClient("mongodb+srv://budgetUser:securePassword123@balancebuddy.r463f.mongodb.net/?retryWrites=true&w=majority&appName=BalanceBuddy")
@@ -99,3 +211,4 @@ if user:
     delete_expense(user, "Coffee", "2024-11-07")
     set_experience_points(user, 100)
     print(f"Experience Points: {get_experience_points(user)}")
+"""
