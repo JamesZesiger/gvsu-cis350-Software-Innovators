@@ -55,7 +55,7 @@ def login_user(email, password):
 # Function to update user data in the database
 def update_user_data(user):
     """
-    Updates the user data in the database based on the current state of the User object.
+    Syncs the User object data back to the database.
     """
     user_data = {
         "user_name": user.username,
@@ -75,7 +75,7 @@ def update_user_data(user):
     )
     print("User data updated successfully!")
 
-# Function to get all expenses for a user
+# Function to update User Object from database
 def get_all_expenses(user):
     """
     Retrieves all expenses for a user from the database and updates the User object.
@@ -88,7 +88,7 @@ def get_all_expenses(user):
     else:
         print("User not found.")
 
-# Function to get all income for a user
+# Function to update User Object from database
 def get_all_income(user):
     """
     Retrieves all income for a user from the database and updates the User object.

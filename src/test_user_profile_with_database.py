@@ -4,6 +4,15 @@ from User_Profile import User
 """
 first call register_user or login_user from database to set User object
 get info by calling User_Profile, call update_user_data(user) to sync back with the database
+
+Adding a value to the user profile class
+user.add_expenses("Food", 15.20) #add to user profile
+update_user_data(user) - call this function to update database
+
+user.add_income("IT support", 410.00)
+update_user_data(user)
+
+To get info just call the user profile
 """
 
 test_email = "johndoe@example.com"
@@ -20,6 +29,39 @@ user = login_user(test_email, test_password)
 if user:
     print(f"Logged in as: {user.username}")
 
+"""
+user.add_expenses("Food", 15.20)
+update_user_data(user)  
+
+user.add_income("IT support", 410.00)
+update_user_data(user)
+"""
+
+
+
+
+print("All Expenses:")
+for date, daily_expenses in user.expenses.items():
+    print(f"Date: {date}")
+    for tag, amount in daily_expenses.items():
+        print(f"  - {tag}: ${amount}")
+print(user.sum_of_current_expenses())
+
+
+print("All Income:")
+for date, daily_income in user.income.items():
+    print(f"Date: {date}")
+    for tag, amount in daily_income.items():
+        print(f"  - {tag}: ${amount}")
+print(user.sum_of_current_income())
+
+
+
+
+
+
+
+"""
 # Add expenses and sync with database
 print("\n=== Adding Expenses ===")
 # add using User_Profile class
@@ -47,3 +89,4 @@ print("Current Income:", user.income)
 print("\n=== Updating Experience Points ===")
 user.add_experience(100)
 update_user_data(user)  # Sync with database
+"""
