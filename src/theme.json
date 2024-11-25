@@ -1,8 +1,4 @@
 {
-    "global": {
-        "font_path": "fonts/AgenorNeue-Regular.otf",
-        "font_size": 14
-    },
     "name_input": {
         "font": {
             "size": 16
@@ -38,6 +34,7 @@
     },
     "login_button": {
         "font": {
+            "name":"DejaVu Sans Mono",
             "size": 24
         },
         "colours": {
@@ -48,6 +45,7 @@
     },
     "signup_button": {
         "font": {
+            "name":"DejaVu Sans Mono",
             "size": 24
         },
         "colours": {
@@ -58,6 +56,7 @@
     },
     "create_account_button": {
         "font": {
+            "name": "DejaVu Sans Mono",
             "size": 24
         },
         "colours": {
@@ -66,8 +65,85 @@
             "hovered_bg": "#253A2D"
         }
     },
+    "dash_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D",
+            "disabled_bg": "#CFCFA5",
+            "disabled_text": "#305B3F"
+        }
+    },
+    "expenses_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D",
+            "disabled_bg": "#CFCFA5",
+            "disabled_text": "#305B3F"
+        }
+    },
+    "income_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D",
+            "disabled_bg": "#CFCFA5",
+            "disabled_text": "#305B3F"
+        }
+    },
+    "goals_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D",
+            "disabled_bg": "#CFCFA5",
+            "disabled_text": "#305B3F"
+        }
+    },
+    "settings_button": {
+        "font": {
+            "size": 2
+        },
+        "colours": {
+            "normal_text": "rgba(0, 0, 0, 0)",
+            "hovered_text": "rgba(0, 0, 0, 0)",
+            "active_text": "rgba(0, 0, 0, 0)",
+            "normal_bg": "rgba(0, 0, 0, 0)",
+            "hovered_bg": "rgba(0, 0, 0, 0)",
+            "active_bg": "rgba(0, 0, 0, 0)"
+        },
+        "border_width": {
+            "normal": 0,
+            "hovered": 0,
+            "active": 0
+        },
+        "border_colour": {
+            "normal": "#253A2D",
+            "hovered": "#253A2D",
+            "active": "#253A2D"
+        },
+        "shape": "rectangle"
+    },
     "title_label": {
         "font": {
+            "name": "DejaVu Sans Mono",
             "size": 72
         },
         "colours": {
@@ -76,6 +152,7 @@
     },
     "title_label_signup": {
         "font": {
+            "name": "DejaVu Sans Mono",
             "size": 36
         },
         "colours": {
@@ -84,6 +161,7 @@
     },
     "name_label": {
         "font": {
+            "name": "DejaVu Sans Mono",
             "size": 18
         },
         "colours": {
@@ -92,6 +170,7 @@
     },
     "email_label": {
         "font": {
+            "name": "DejaVu Sans Mono",
             "size": 18
         },
         "colours": {
@@ -100,6 +179,7 @@
     },
     "password_label": {
         "font": {
+            "name":"DejaVu Sans Mono",
             "size": 18
         },
         "colours": {
@@ -108,10 +188,49 @@
     },
     "return_label": {
         "font": {
+            "name": "DejaVu Sans Mono",
             "size": 16
         },
         "colours": {
             "normal_text": "#E52C04"
+        }
+    },
+    "header_label": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5"
+        }
+    },
+    "module_label": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5"
+        }
+    },
+    "expense_item": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 20,
+            "bold": 1
+        },
+        "colours": {
+            "normal_text": "#FFB84D"
+        }
+    },
+    "percent_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 70,
+            "bold": 1
+        },
+        "colours": {
+            "normal_text": "#FFB84D"
         }
     }
 }
