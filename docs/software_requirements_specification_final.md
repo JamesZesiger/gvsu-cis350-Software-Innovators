@@ -36,3 +36,8 @@ The purpose of this document is to list set functional and non-functional requir
     4. Password shall be hidden during log-in
     5. Data stored in the database shall be encrypted
 # Links
+[Use Case Diagram](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/artifacts/Use_Case_Diagram.png)\
+[Gantt Chart](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/docs/Gantt_Chart.pdf)
+[Jira](https://software-innovators.atlassian.net/jira/software/projects/SCRUM/boards/1)
+[Class Diagram]()
+[Sequence/Communications Diagram]()
