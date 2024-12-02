@@ -303,7 +303,6 @@ def expenses():
                         try:
                             expense_cost = float(expense_cost_input.get_text())
                             user.add_expenses(expense_name, expense_cost)
-                            update_user_data(user)
                             print(f"Added expense: {expense_name} - ${expense_cost}")
                             # Clear inputs
                             expense_name_input.set_text("")
