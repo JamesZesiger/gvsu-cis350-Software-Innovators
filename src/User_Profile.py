@@ -1,5 +1,4 @@
 from datetime import date, timedelta
-import database
 
 class LengthError(Exception):
     """
@@ -138,8 +137,7 @@ class User:
         if date.today().strftime("%m/%d/%y") not in self.__expenses: self.__expenses[date.today().strftime("%m/%d/%y")] = {}
         self.__expenses[date.today().strftime("%m/%d/%y")][tag] = expense              # adds expense to __expenses with todays date as key
         self.add_experience(100)
-        database.update_user_data(self)
-
+        
     def remove_expenses(self, date, tag = None):
         """
         method that removes an entry from a specified date
@@ -231,9 +229,6 @@ class User:
         if date.today().strftime("%m/%d/%y") not in self.__income: self.__income[date.today().strftime("%m/%d/%y")] = {}
         self.__income[date.today().strftime("%m/%d/%y")][tag] = income           # adds expense to __expenses with todays date as key
         self.add_experience(100)
-        database.update_user_data(self)
-
-
     def remove_income(self, date, tag = None):
         """
         method that removes an entry from a specified date
