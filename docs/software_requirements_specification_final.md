@@ -1,5 +1,5 @@
 # Overview
-The purpose of this document is to list set functional and non-functional requirements for a budgeting application. The desktop application BalanceBuddy balances expenses, income, savings, and more. BalanceBuddy is targeted mainly at college students struggling to maintain their finances. BalanceBuddy features a gamified tracking system designed to maintain an active user base.
+The purpose of this document is to list set functional and non-functional requirements for a budgeting application. The desktop application BalanceBuddy balances expenses, income, savings, and more. BalanceBuddy is targeted at college students struggling to maintain their finances. BalanceBuddy features a gamified tracking system designed to maintain an active user base.
 # Functional Requirements
 1. User Profile
     1. Users shall be able to sign in to the existing profile
@@ -14,7 +14,7 @@ The purpose of this document is to list set functional and non-functional requir
     4. Users shall be able to log their expenses
     5. Expense tracker shall contain log date, name of expense source, and an amount
     6. Expense tacker shall calculate total expenditure in the past week
-3. GUI and database
+3. GUI
     1. The application shall use an intuitive easy to navigate UI
     2. The application shall use a unified color palette for all sections
     3. GUI shall have a dedicated page for each function
@@ -24,11 +24,13 @@ The purpose of this document is to list set functional and non-functional requir
     1. Admins shall be able to post new events for all users
     2. Users Shall be able to receive notifications to log their daily income/expenses
     3. Income tracker shall display recent or total income on a graph
-    5. Expense tracker shall display recent or total expenses on a  
+    5. Expense tracker shall display recent or total expenses on a graph
 2. Online functions
     1. A leaderboard shall display global or friend rankings
     2. The leaderboard shall only display non-sensitive information such as level, EXP, or consecutive days using the app
-    3. Users shall be able to send and receive friend requests 
+    3. Users shall be able to send and receive friend requests
+    4. Users shall receive EXP for logging expenses and income
+    5. Gaining more EXP shall increase users' level
 3. Functionality
     1. BalanceBuddy shall run on MacOS and Windows 11
     2. BalanceBuddy shall remember the logged-in user on startup
@@ -36,8 +38,12 @@ The purpose of this document is to list set functional and non-functional requir
     4. Password shall be hidden during log-in
     5. Data stored in the database shall be encrypted
 # Links
-[Use Case Diagram](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/artifacts/Use_Case_Diagram.png)\
+[Use Case Diagram](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/artifacts/Use_Case_Diagram.png)
+
 [Gantt Chart](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/docs/Gantt_Chart.pdf)
+
 [Jira](https://software-innovators.atlassian.net/jira/software/projects/SCRUM/boards/1)
-[Class Diagram]()
-[Sequence/Communications Diagram]()
+
+[Class Diagram](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/artifacts/Class%20Diagram.pdf)
+
+[Communications Diagram](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/artifacts/Communication%20Diagram.pdf)
