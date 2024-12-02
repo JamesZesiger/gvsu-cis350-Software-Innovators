@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import database
 
 class LengthError(Exception):
     """
@@ -136,6 +137,8 @@ class User:
         if type(expense)!= float: raise TypeError            # raises TypeError if expense is not a float
         if date.today().strftime("%m/%d/%y") not in self.__expenses: self.__expenses[date.today().strftime("%m/%d/%y")] = {}
         self.__expenses[date.today().strftime("%m/%d/%y")][tag] = expense              # adds expense to __expenses with todays date as key
+        self.add_experience(100)
+        database.update_user_data(self)
 
     def remove_expenses(self, date, tag = None):
         """
@@ -227,6 +230,9 @@ class User:
         if type(income)!= float: raise TypeError            # raises TypeError if expense is not a float
         if date.today().strftime("%m/%d/%y") not in self.__income: self.__income[date.today().strftime("%m/%d/%y")] = {}
         self.__income[date.today().strftime("%m/%d/%y")][tag] = income           # adds expense to __expenses with todays date as key
+        self.add_experience(100)
+        database.update_user_data(self)
+
 
     def remove_income(self, date, tag = None):
         """
