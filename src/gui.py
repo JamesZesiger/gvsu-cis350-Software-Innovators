@@ -1,6 +1,12 @@
 import pygame
 import pygame_gui
 import sys
+from database import *
+from datetime import date, timedelta
+import matplotlib.pyplot as plt
+import io 
+
+user = None
 
 # initialize pygame instance
 pygame.init()
@@ -162,30 +168,111 @@ def dashboard():
         pygame.display.update()
 
 def expenses():
+    global user
     page_title = "Expenses Tracker/Input"
     pygame.display.set_caption(page_title)
 
     dock_elements = create_dock_elements("expenses")
-
     header_elements = create_header_elements(page_title)
 
-    while True:
-        ui_refresh_rate = clock.tick(60)/1000
-        dash_mouse_pos = pygame.mouse.get_pos()
+    # Track local elements to clear them later
+    local_elements = []
 
-        # fill in background
+    # Create Text Input and Button Elements
+    expense_name_label = pygame_gui.elements.UILabel(
+        relative_rect=pygame.Rect((200, 520), (150, 30)),  # Adjusted position to leave space below the graph
+        text="Expense Name:",
+        manager=manager,
+        object_id="email_label"
+    )
+    expense_name_input = pygame_gui.elements.UITextEntryLine(
+        relative_rect=pygame.Rect((360, 520), (200, 30)),  # Positioned next to label
+        manager=manager,
+        object_id="name_input"
+    )
+    expense_cost_label = pygame_gui.elements.UILabel(
+        relative_rect=pygame.Rect((200, 570), (150, 30)),  # Adjusted position
+        text="Expense Cost:",
+        manager=manager,
+        object_id="email_label"
+    )
+    expense_cost_input = pygame_gui.elements.UITextEntryLine(
+        relative_rect=pygame.Rect((360, 570), (200, 30)),  # Positioned next to label
+        manager=manager,
+        object_id="name_input"
+    )
+    add_expense_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect((width // 2 - 100, 630), (200, 60)),  # Increased button size
+        text="Add Expense",
+        manager=manager,
+        object_id="login_button"
+    )
+
+    # Add elements to the local tracking list
+    local_elements.extend([
+        expense_name_label,
+        expense_name_input,
+        expense_cost_label,
+        expense_cost_input,
+        add_expense_button
+    ])
+
+    # Function to create the expenses graph
+    def create_expenses_graph(user):
+        days = []
+        totals = []
+        day_pointer = date.today() - timedelta(days=6)
+
+        for _ in range(7):
+            formatted_date = day_pointer.strftime("%m/%d/%y")
+            day_expense = sum(user.expenses.get(formatted_date, {}).values())
+            days.append(formatted_date)
+            totals.append(day_expense)
+            day_pointer += timedelta(days=1)
+
+        # Adjusted figure size for a slightly smaller graph
+        plt.figure(figsize=(7, 3.5))  
+        plt.bar(days, totals, color='green')
+        plt.title("Expenses Last 7 Days")
+        plt.xlabel("Date")
+        plt.ylabel("Amount ($)")
+        plt.xticks(rotation=45)
+        plt.ylim(0, max(totals) + 50)  # Axis from 0 to max value + buffer
+        plt.tight_layout()
+
+        # Render to a surface
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format="PNG")
+        buffer.seek(0)
+        plt.close()
+        graph_image = pygame.image.load(buffer)
+        buffer.close()
+
+        return graph_image
+
+    # Generate the initial graph
+    graph_surface = create_expenses_graph(user)
+
+    while True:
+        ui_refresh_rate = clock.tick(60) / 1000
+
+        # Fill in background
         screen.fill(background_color)
 
-        # draw dock background
-        pygame.draw.rect(screen, dock_color, (10, height-90, width-20, 80))
+        # Draw dock background
+        pygame.draw.rect(screen, dock_color, (10, height - 90, width - 20, 80))
 
-        # draw header background & settings icon
+        # Draw header background & settings icon
         pygame.draw.rect(screen, dock_color, (0, 0, width, 50))
-        screen.blit(settings_icon, (width-50, 5))
+        screen.blit(settings_icon, (width - 50, 5))
 
-        # draw module
-        pygame.draw.rect(screen, module_color, (30, 80, width-60, 425))
-        
+        # Draw module background
+        pygame.draw.rect(screen, module_color, (30, 80, width - 60, 425))
+
+        # Display the graph
+        graph_rect = graph_surface.get_rect(center=(width // 2, 285))  # Adjusted vertical position
+        screen.blit(graph_surface, graph_rect)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -193,22 +280,38 @@ def expenses():
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == dock_elements[0]:
-                        # dashboard button
+                        # Dashboard button
                         clear_ui(dock_elements)
                         clear_ui(header_elements)
+                        clear_ui(local_elements)
                         dashboard()
                     elif event.ui_element == dock_elements[2]:
-                        # income button
+                        # Income button
                         clear_ui(dock_elements)
                         clear_ui(header_elements)
+                        clear_ui(local_elements)
                         income()
                     elif event.ui_element == dock_elements[3]:
-                        # goals button
+                        # Goals button
                         clear_ui(dock_elements)
                         clear_ui(header_elements)
+                        clear_ui(local_elements)
                         goals()
-                    # elif event.ui_element == header_elements[1]:
-                    #     settings(page_title)
+                    elif event.ui_element == add_expense_button:
+                        # Handle adding an expense
+                        expense_name = expense_name_input.get_text()
+                        try:
+                            expense_cost = float(expense_cost_input.get_text())
+                            user.add_expenses(expense_name, expense_cost)
+                            update_user_data(user)
+                            print(f"Added expense: {expense_name} - ${expense_cost}")
+                            # Clear inputs
+                            expense_name_input.set_text("")
+                            expense_cost_input.set_text("")
+                            # Update the graph
+                            graph_surface = create_expenses_graph(user)
+                        except ValueError:
+                            print("Invalid cost. Please enter a numeric value.")
 
             manager.process_events(event)
 
@@ -351,6 +454,7 @@ def create_login_elements():
     return [welcome_label, balancebuddy_label, email_label, email_text_input, password_label, password_text_input, login_button, signup_button, error_label]
 
 def login():
+    global user
     pygame.display.set_caption("Login Screen")
 
     current_elements = create_login_elements()
@@ -380,6 +484,7 @@ def login():
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == current_elements[6]:
                         # check if login is valid
+                        user = login_user(current_elements[3].get_text(), current_elements[5].get_text())
                         clear_ui(current_elements)
                         dashboard()
                     elif event.ui_element == current_elements[7]:
