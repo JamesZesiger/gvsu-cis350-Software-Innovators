@@ -21,6 +21,9 @@ The goal of having this "gamified" version of a budgeting app is to increase use
 
 * [PyMongo:](https://pypi.org/project/pymongo/) Used to connect to MongoDB. 
     * Install command: ```pip install pymongo```
+      
+* matplotlib: Used for creating the graph in the expenses tab
+     * Install command: ```pip install matplotlib```
 
 ## Run Instructions
 Currently, to run the GUI for the application:
