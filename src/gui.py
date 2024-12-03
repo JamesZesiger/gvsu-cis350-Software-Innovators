@@ -361,7 +361,7 @@ def income():
     pygame.display.set_caption(page_title)
 
     dock_elements = create_dock_elements("income")
-
+    current_elements = create_income_elements()
     header_elements = create_header_elements(page_title)
 
     while True:
@@ -389,20 +389,29 @@ def income():
                 sys.exit()
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == dock_elements[0]:
+                    if event.ui_element == current_elements[5]:
+                        global user
+                        user.add_income(current_elements[2].get_text(),float(current_elements[4].get_text()))
+                        current_elements[3].kill()
+                        current_elements[3] = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((50, 50 + (height/2)+150), (668, 100)), manager=manager, text=(f"${user.sum_of_current_income()}"), object_id="password_label")
+                        #database.update_user_data(user)
+                    elif event.ui_element == dock_elements[0]:
                         # dashboard button
                         clear_ui(dock_elements)
                         clear_ui(header_elements)
+                        clear_ui(current_elements)
                         dashboard()
                     elif event.ui_element == dock_elements[1]:
                         # expenses button
                         clear_ui(dock_elements)
                         clear_ui(header_elements)
+                        clear_ui(current_elements)
                         expenses()
                     elif event.ui_element == dock_elements[3]:
                         # goals button
                         clear_ui(dock_elements)
                         clear_ui(header_elements)
+                        clear_ui(current_elements)
                         goals()
                     # elif event.ui_element == header_elements[1]:
                     #     settings(page_title)
@@ -412,6 +421,23 @@ def income():
         manager.update(ui_refresh_rate)
         manager.draw_ui(screen)
         pygame.display.update()
+
+def create_income_elements():
+    global user
+    income_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((width/8, 100), (65, 65)), manager=manager, text="Label:", object_id="password_label")
+    Amount = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width-300), 100), (65, 65)), manager=manager, text="Amount", object_id="password_label")
+    income_label_text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(((width/8), 150), (200, 50)), manager=manager, object_id="email_input")
+    Amount_text_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect(((width-300), 150), (200, 50)), manager=manager, object_id="password_input")
+    log_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((50, 200 + (350/2)), (668, 100)), text="Log", manager=manager, object_id="log_button")
+    sunday = date.today() - timedelta(days = date.today().isoweekday())
+    saturday = sunday + timedelta(days = 6)
+    current_bal = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2)-200, (height/2)+40), (400, 200)), manager=manager, text=f"Total Income for week of {sunday.strftime("%m/%d")}-{saturday.strftime("%m/%d")}", object_id="password_label")
+    balance = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((50, 50 + (height/2)+150), (668, 100)), manager=manager, text=(f"${user.sum_of_current_income()}"), object_id="password_label")
+
+    error_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((214, 620), (300, 50)), manager=manager, text="", object_id="error_label")
+
+    return [income_label, Amount, income_label_text_input, balance, Amount_text_input, log_button, current_bal, error_label]
+
 
 def goals():
     page_title = "Goal Progress & Setup"
