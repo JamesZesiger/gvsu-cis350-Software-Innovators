@@ -270,16 +270,23 @@ def expenses():
     def create_expenses_graph(user):
         days = []
         totals = []
-        day_pointer = date.today() - timedelta(days=6)
+        day_pointer = datetime.now() - timedelta(days=6)
 
         for _ in range(7):
             formatted_date = day_pointer.strftime("%m/%d/%y")
-            day_expense = sum(user.expenses.get(formatted_date, {}).values())
+
+            # Sum all expenses that match the current date
+            day_expense = sum(
+                amount
+                for key, expenses in user.expenses.items()
+                if key.startswith(formatted_date)  # Match keys that start with the date
+                for amount in expenses.values()  # Sum all amounts for the date
+            )
+
             days.append(formatted_date)
             totals.append(day_expense)
             day_pointer += timedelta(days=1)
 
-        # Adjusted figure size for a slightly smaller graph
         plt.figure(figsize=(7, 3.5))  
         plt.bar(days, totals, color='green')
         plt.title("Expenses Last 7 Days")
@@ -289,7 +296,6 @@ def expenses():
         plt.ylim(0, max(totals) + 50)  # Axis from 0 to max value + buffer
         plt.tight_layout()
 
-        # Render to a surface
         buffer = io.BytesIO()
         plt.savefig(buffer, format="PNG")
         buffer.seek(0)
