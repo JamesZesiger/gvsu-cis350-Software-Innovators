@@ -31,11 +31,6 @@ user_icon = pygame.transform.scale(user_icon, (40,40))
 settings_icon = pygame.image.load("images/settings_icon.png")
 settings_icon = pygame.transform.scale(settings_icon, (40,40)).convert_alpha()
 
-# mock user data:
-user_expenses = "Down"
-user_expense_percent = "10%"
-user_expense_list = {"Gas": 50, "Groceries": 100, "Rent": 500, "Utilities": 100, "Entertainment": 50}
-
 
 def clear_ui(elements):
     for element in elements:
@@ -85,32 +80,71 @@ def dashboard():
 
     local_elements = []
 
-    recent_expenses_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((30, 80), (344, 50)), manager=manager, text="Recent Expenses:", object_id="module_label")
-    expenses_change_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2) + 5, 80), (344, 50)), manager=manager, text=f"Expenses {user_expenses}", object_id="module_label")
-    from_prev_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2) + 5, 255), (344, 50)), manager=manager, text="From Previous Week", object_id="module_label")
-
-    local_elements.append(recent_expenses_label)
-    local_elements.append(expenses_change_label)
-    local_elements.append(from_prev_label)
-
     key_column_width = 15
     cost_column_width = 8
 
     i = 0
-    for key, value in user_expense_list.items():
-        if i < 3:
-            formatted_key = key.ljust(key_column_width)
-            label_text = f"{formatted_key}-- {f'${value}':>{cost_column_width}}"
-            expense_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((30, 140 + (list(user_expense_list.keys()).index(key) * 30)), (344, 50)), manager=manager, text=label_text, object_id="expense_item")
-            local_elements.append(expense_label)
-            i += 1
+    for item in user.expenses:
+        expense = user.expenses[item]
+        for key in expense:
+            cost = expense[key]
+            if i < 4:
+                formatted_key = key.ljust(key_column_width)
+                label_text = f"{formatted_key}-- {f'${cost}':>{cost_column_width}}"
+                expense_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((30, 140 + (i * 30)), (344, 50)), manager=manager, text=label_text, object_id="expense_item")
+                local_elements.append(expense_label)
+                i += 1
 
-    expense_percent_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2) + 5, 80), (344, 225)), manager=manager, text=user_expense_percent, object_id="percent_label")
-    local_elements.append(expense_percent_label)
+    # expenses module
+    recent_expenses_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((30, 80), (344, 50)), manager=manager, text="Recent Expenses:", object_id="module_label")
+    expenses_change_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2) + 5, 80), (344, 50)), manager=manager, text="Total Expenses:", object_id="module_label")
+    from_prev_expenses_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2) + 5, 255), (344, 50)), manager=manager, text="Current Week", object_id="module_label")
+
+    local_elements.append(recent_expenses_label)
+    local_elements.append(expenses_change_label)
+    local_elements.append(from_prev_expenses_label)
+
+    sum_expenses = user.sum_of_current_expenses()
+
+    expense_total_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2) + 5, 80), (344, 225)), manager=manager, text=f"${sum_expenses}", object_id="total_label")
+    local_elements.append(expense_total_label)
+
+    # income module
+
+    i = 0
+    for item in user.income:
+        income = user.income[item]
+        for key in income:
+            amount = income[key]
+            if i < 4:
+                formatted_key = key.ljust(key_column_width)
+                label_text = f"{formatted_key}-- {f'${amount}':>{cost_column_width}}"
+                income_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((30, 400 + (i * 30)), (344, 50)), manager=manager, text=label_text, object_id="income_item")
+                local_elements.append(income_label)
+                i += 1
+
+    prev_income = user.sum_of_current_income()
+
+    recent_income_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((30, 350), (344, 50)), manager=manager, text="Recent Income:", object_id="module_label")
+    last_week_income_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2), 350), (344, 50)), manager=manager, text="Total Income:", object_id="module_label")
+    total_income_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2), 400), (344, 100)), manager=manager, text=f"${prev_income}", object_id="total_label")
+    from_prev_income_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2), 500), (344, 50)), manager=manager, text="Current Week", object_id="module_label")
+    
+    local_elements.append(recent_income_label)
+    local_elements.append(last_week_income_label)
+    local_elements.append(total_income_label)
+    local_elements.append(from_prev_income_label)
+
+    # goals module
+
+    # savings_goal_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((30, 620), (344, 30)), manager=manager, text=f"Savings Goal: ${user_savings_goal}", object_id="module_label")
+    # current_balance_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((width-404, 815), (344, 30)), manager=manager, text=f"Current Balance: ${user_balance}", object_id="module_label")
+
+    # local_elements.append(savings_goal_label)
+    # local_elements.append(current_balance_label)
 
     while True:
         ui_refresh_rate = clock.tick(60)/1000
-        dash_mouse_pos = pygame.mouse.get_pos()
 
         # fill in background
         screen.fill(background_color)
@@ -125,12 +159,15 @@ def dashboard():
         # setup modules
         pygame.draw.rect(screen, module_color, (30, 80, width-60, 225))
         pygame.draw.rect(screen, background_color, ((width/2)-10, 85, 20, 215))
+
         pygame.draw.rect(screen, module_color, (30, 350, width-60, 225))
         pygame.draw.rect(screen, background_color, ((width/2)-10, 355, 20, 215))
-        pygame.draw.rect(screen, module_color, (30, 620, width-60, 225))
 
-        # module 1: expenses module
+        # pygame.draw.rect(screen, module_color, (30, 620, width-60, 225))
 
+        # bar for goals module
+
+        # pygame.draw.rect(screen, background_color, ((width/2)-300, 710, 600, 50))
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -449,7 +486,7 @@ def create_login_elements():
 
     signup_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((30, height - 90), (200, 60)), text="Sign Up", manager=manager, object_id="signup_button")
 
-    error_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((214, 620), (300, 50)), manager=manager, text="", object_id="error_label")
+    error_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2)-150, 700), (300, 50)), manager=manager, text="", object_id="error_label")
 
     return [welcome_label, balancebuddy_label, email_label, email_text_input, password_label, password_text_input, login_button, signup_button, error_label]
 
@@ -484,9 +521,19 @@ def login():
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == current_elements[6]:
                         # check if login is valid
-                        user = login_user(current_elements[3].get_text(), current_elements[5].get_text())
-                        clear_ui(current_elements)
-                        dashboard()
+                        if (current_elements[3].get_text()) and (current_elements[5].get_text()):
+                            email = current_elements[3].get_text()
+                            password = current_elements[5].get_text()
+                            user = login_user(email, password)
+                        else:
+                            current_elements[8].set_text("Please enter each field")
+                        
+                        if user:
+                            clear_ui(current_elements)
+                            dashboard()
+                        else:
+                            current_elements[8].set_text("Invalid Credentials")
+
                     elif event.ui_element == current_elements[7]:
                         clear_ui(current_elements)
                         signUp()
@@ -521,7 +568,9 @@ def create_signup_elements():
     return_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((0, height - 150), (265, 100)), manager=manager, text="Already have an account?", object_id="return_label")
     login_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((30, height - 90), (200, 60)), text="Login", manager=manager, object_id="login_button")
 
-    return [title_label, name_label, name_text_input, email_label, email_text_input, password_label, password_text_input, confirm_password_label, confirm_password_text_input, create_account_button, login_button, return_label]
+    error_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(((width/2)-150, 700), (300, 50)), manager=manager, text="", object_id="error_label")
+
+    return [title_label, name_label, name_text_input, email_label, email_text_input, password_label, password_text_input, confirm_password_label, confirm_password_text_input, create_account_button, login_button, return_label, error_label]
 
 def signUp():
     pygame.display.set_caption("Sign Up Screen")
@@ -531,8 +580,6 @@ def signUp():
     # game loop
     while True:
         ui_refresh_rate = clock.tick(60)/1000
-
-        signup_mouse_pos = pygame.mouse.get_pos()
 
         # set background color
         screen.fill(background_color)
@@ -554,9 +601,32 @@ def signUp():
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == current_elements[9]:
-                        # check if login is valid
-                        clear_ui(current_elements)
-                        dashboard()
+                        # check if signup is valid
+                        error = False
+                        if (current_elements[2].get_text()):
+                            user_name = current_elements[2].get_text()
+                        else:
+                            current_elements[12].set_text("Please enter each field")
+                            error = True
+                        if (current_elements[4].get_text()):
+                            email = current_elements[4].get_text()
+                        else:
+                            current_elements[12].set_text("Please enter each field")
+                            error = True
+                        if (current_elements[6]) and (current_elements[6].get_text() == current_elements[8].get_text()):
+                            password = current_elements[6].get_text()
+                        else:
+                            current_elements[12].set_text("Passwords do not match")
+                            error = True
+
+                        if not error:
+                            user = register_user(user_name, email, password)
+                            if user:
+                                clear_ui(current_elements)
+                                dashboard()
+                            else:
+                                current_elements[12].set_text("Failed to Create Account")
+                            
                     elif event.ui_element == current_elements[10]:
                         clear_ui(current_elements)
                         login()

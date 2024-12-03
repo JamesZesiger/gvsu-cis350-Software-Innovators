@@ -223,7 +223,17 @@
             "normal_text": "#FFB84D"
         }
     },
-    "percent_label": {
+    "income_item": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 20,
+            "bold": 1
+        },
+        "colours": {
+            "normal_text": "#FFB84D"
+        }
+    },
+    "total_label": {
         "font": {
             "name": "DejaVu Sans Mono",
             "size": 70,
@@ -231,6 +241,15 @@
         },
         "colours": {
             "normal_text": "#FFB84D"
+        }
+    },
+    "error_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 16
+        },
+        "colours": {
+            "normal_text": "#E52C04"
         }
     }
 }
