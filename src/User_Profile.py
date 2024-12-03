@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 
 class LengthError(Exception):
     """
@@ -134,8 +134,8 @@ class User:
             - TypeError
         """
         if type(expense)!= float: raise TypeError            # raises TypeError if expense is not a float
-        if date.today().strftime("%m/%d/%y") not in self.__expenses: self.__expenses[date.today().strftime("%m/%d/%y")] = {}
-        self.__expenses[date.today().strftime("%m/%d/%y")][tag] = expense              # adds expense to __expenses with todays date as key
+        if datetime.now().strftime("%m/%d/%y %H:%M:%S") not in self.__expenses: self.__expenses[datetime.now().strftime("%m/%d/%y %H:%M:%S")] = {}
+        self.__expenses[datetime.now().strftime("%m/%d/%y %H:%M:%S")][tag] = expense              # adds expense to __expenses with todays date as key
         self.add_experience(100)
         
     def remove_expenses(self, date, tag = None):
@@ -156,10 +156,10 @@ class User:
             - total
         """
         total = 0
-        day_pointer = date.today() - timedelta(days = date.today().isoweekday())        # sets day_pointer to sunday
+        day_pointer = datetime.now() - timedelta(days = datetime.now().isoweekday())        # sets day_pointer to sunday
         for x in range(0,7):                                                            # iterates for 7 days
-            if day_pointer.strftime("%m/%d/%y") in self.__expenses:                       # checks if date is in expense dict
-                for value in self.__expenses[day_pointer.strftime("%m/%d/%y")].items():   # iterates though expense values at day_pointer location
+            if day_pointer.strftime("%m/%d/%y %H:%M:%S") in self.__expenses:                       # checks if date is in expense dict
+                for value in self.__expenses[day_pointer.strftime("%m/%d/%y %H:%M:%S")].items():   # iterates though expense values at day_pointer location
                     total+=float(value[1])              
             day_pointer += timedelta(days = 1)                                          # increments day_pointer by 1 day
         return round(total,2)                                                           # returns total rounded to nearest hundreth 
@@ -226,8 +226,8 @@ class User:
             - TypeError
         """
         if type(income)!= float: raise TypeError            # raises TypeError if expense is not a float
-        if date.today().strftime("%m/%d/%y") not in self.__income: self.__income[date.today().strftime("%m/%d/%y")] = {}
-        self.__income[date.today().strftime("%m/%d/%y")][tag] = income           # adds expense to __expenses with todays date as key
+        if datetime.now().strftime("%m/%d/%y %H:%M:%S") not in self.__income: self.__income[datetime.now().strftime("%m/%d/%y %H:%M:%S")] = {}
+        self.__income[datetime.now().strftime("%m/%d/%y %H:%M:%S")][tag] = income           # adds expense to __expenses with todays date as key
         self.add_experience(100)
     def remove_income(self, date, tag = None):
         """
@@ -248,10 +248,10 @@ class User:
             - total
         """
         total = 0
-        day_pointer = date.today() - timedelta(days = date.today().isoweekday())        # sets day_pointer to sunday
+        day_pointer = datetime.now() - timedelta(days = datetime.now().isoweekday())        # sets day_pointer to sunday
         for x in range(0,7):                                                            # iterates for 7 days
-            if day_pointer.strftime("%m/%d/%y") in self.__income:                       # checks if date is in income dict
-                for value in self.__income[day_pointer.strftime("%m/%d/%y")].items():   # iterates though income values at day_pointer location
+            if day_pointer.strftime("%m/%d/%y %H:%M:%S") in self.__income:                       # checks if date is in income dict
+                for value in self.__income[day_pointer.strftime("%m/%d/%y %H:%M:%S")].items():   # iterates though income values at day_pointer location
                     total+=float(value[1])              
             day_pointer += timedelta(days = 1)                                          # increments day_pointer by 1 day
         return round(total,2)                                                           # returns total rounded to nearest hundreth 
