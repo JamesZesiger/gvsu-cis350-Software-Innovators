@@ -161,13 +161,15 @@ class User:
             formatted_date = day_pointer.strftime("%m/%d/%y")
 
             # Sum all expenses that match the current date
-            day_expense = sum(
+            day_expenses = sum(
                 amount
-                for key, income in self.__income.items()
+                for key, expenses in self.__expenses.items()
                 if key.startswith(formatted_date)  # Match keys that start with the date
-                for amount in income.values()  # Sum all amounts for the date
-            )                                                         # returns total rounded to nearest hundreth 
-        return day_expense                                                          # returns total rounded to nearest hundreth 
+                for amount in expenses.values()  # Sum all amounts for the date
+            )        
+
+            day_pointer += timedelta(days=1)                                                  # returns total rounded to nearest hundreth 
+        return day_expenses                                                         # returns total rounded to nearest hundreth 
 
 
     @property
@@ -252,6 +254,7 @@ class User:
         Returns:
             - total
         """
+
         day_pointer = datetime.now() - timedelta(days=6)
 
         for _ in range(7):
@@ -263,5 +266,7 @@ class User:
                 for key, income in self.__income.items()
                 if key.startswith(formatted_date)  # Match keys that start with the date
                 for amount in income.values()  # Sum all amounts for the date
-            )                                                         # returns total rounded to nearest hundreth 
+            )        
+
+            day_pointer += timedelta(days=1)                                                  # returns total rounded to nearest hundreth 
         return day_income
