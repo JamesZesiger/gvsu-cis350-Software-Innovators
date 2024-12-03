@@ -155,14 +155,19 @@ class User:
         Returns:
             - total
         """
-        total = 0
-        day_pointer = datetime.now() - timedelta(days = datetime.now().isoweekday())        # sets day_pointer to sunday
-        for x in range(0,7):                                                            # iterates for 7 days
-            if day_pointer.strftime("%m/%d/%y %H:%M:%S") in self.__expenses:                       # checks if date is in expense dict
-                for value in self.__expenses[day_pointer.strftime("%m/%d/%y %H:%M:%S")].items():   # iterates though expense values at day_pointer location
-                    total+=float(value[1])              
-            day_pointer += timedelta(days = 1)                                          # increments day_pointer by 1 day
-        return round(total,2)                                                           # returns total rounded to nearest hundreth 
+        day_pointer = datetime.now() - timedelta(days=6)
+
+        for _ in range(7):
+            formatted_date = day_pointer.strftime("%m/%d/%y")
+
+            # Sum all expenses that match the current date
+            day_expense = sum(
+                amount
+                for key, income in self.__income.items()
+                if key.startswith(formatted_date)  # Match keys that start with the date
+                for amount in income.values()  # Sum all amounts for the date
+            )                                                         # returns total rounded to nearest hundreth 
+        return day_expense                                                          # returns total rounded to nearest hundreth 
 
 
     @property
@@ -247,11 +252,16 @@ class User:
         Returns:
             - total
         """
-        total = 0
-        day_pointer = datetime.now() - timedelta(days = datetime.now().isoweekday())        # sets day_pointer to sunday
-        for x in range(0,7):                                                            # iterates for 7 days
-            if day_pointer.strftime("%m/%d/%y %H:%M:%S") in self.__income:                       # checks if date is in income dict
-                for value in self.__income[day_pointer.strftime("%m/%d/%y %H:%M:%S")].items():   # iterates though income values at day_pointer location
-                    total+=float(value[1])              
-            day_pointer += timedelta(days = 1)                                          # increments day_pointer by 1 day
-        return round(total,2)                                                           # returns total rounded to nearest hundreth 
+        day_pointer = datetime.now() - timedelta(days=6)
+
+        for _ in range(7):
+            formatted_date = day_pointer.strftime("%m/%d/%y")
+
+            # Sum all expenses that match the current date
+            day_income = sum(
+                amount
+                for key, income in self.__income.items()
+                if key.startswith(formatted_date)  # Match keys that start with the date
+                for amount in income.values()  # Sum all amounts for the date
+            )                                                         # returns total rounded to nearest hundreth 
+        return day_income
