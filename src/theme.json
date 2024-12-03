@@ -117,29 +117,15 @@
             "disabled_text": "#305B3F"
         }
     },
-    "settings_button": {
+    "logout_button": {
         "font": {
-            "size": 2
+            "name": "DejaVu Sans Mono",
+            "size": 24
         },
         "colours": {
-            "normal_text": "rgba(0, 0, 0, 0)",
-            "hovered_text": "rgba(0, 0, 0, 0)",
-            "active_text": "rgba(0, 0, 0, 0)",
-            "normal_bg": "rgba(0, 0, 0, 0)",
-            "hovered_bg": "rgba(0, 0, 0, 0)",
-            "active_bg": "rgba(0, 0, 0, 0)"
-        },
-        "border_width": {
-            "normal": 0,
-            "hovered": 0,
-            "active": 0
-        },
-        "border_colour": {
-            "normal": "#253A2D",
-            "hovered": "#253A2D",
-            "active": "#253A2D"
-        },
-        "shape": "rectangle"
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F"
+        }
     },
     "title_label": {
         "font": {
@@ -250,6 +236,25 @@
         },
         "colours": {
             "normal_text": "#E52C04"
+        }
+    },
+    "user_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 18
+        },
+        "colours": {
+            "normal_text": "#000000"
+        }
+    },
+    "experience_label": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 18
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "hovered_bg": "#CFCFA5"
         }
     }
 }
