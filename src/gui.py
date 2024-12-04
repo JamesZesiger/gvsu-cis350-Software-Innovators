@@ -413,6 +413,7 @@ def income():
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                     if event.ui_element == current_elements[5]:
                         user.add_income(current_elements[2].get_text(),float(current_elements[4].get_text()))
+                        update_user_data(user)
                         current_elements[3].kill()
                         if (user.income != {}):
                             current_elements[3] = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((50, 50 + (height/2)+150), (668, 100)), manager=manager, text=(f"${user.sum_of_current_income()}"), object_id="password_label")
