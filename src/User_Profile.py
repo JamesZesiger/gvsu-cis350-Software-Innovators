@@ -155,19 +155,17 @@ class User:
         Returns:
             - total
         """
-        day_pointer = datetime.now() - timedelta(days=6)
-
+        day_pointer = datetime.today() - timedelta(days = datetime.today().isoweekday())
+        day_expenses = 0
         for _ in range(7):
             formatted_date = day_pointer.strftime("%m/%d/%y")
 
             # Sum all expenses that match the current date
-            day_expenses = sum(
-                amount
-                for key, expenses in self.__expenses.items()
-                if key.startswith(formatted_date)  # Match keys that start with the date
-                for amount in expenses.values()  # Sum all amounts for the date
-            )        
 
+            for key, expenses in self.__expenses.items():
+                if key.startswith(formatted_date):  # Match keys that start with the date
+                    for x in expenses.items():
+                        day_expenses+=x[1]
             day_pointer += timedelta(days=1)                                                  # returns total rounded to nearest hundreth 
         return day_expenses                                                         # returns total rounded to nearest hundreth 
 
@@ -255,18 +253,16 @@ class User:
             - total
         """
 
-        day_pointer = datetime.now() - timedelta(days=6)
-
+        day_pointer = datetime.today() - timedelta(days = datetime.today().isoweekday())
+        day_income = 0
         for _ in range(7):
             formatted_date = day_pointer.strftime("%m/%d/%y")
 
             # Sum all expenses that match the current date
-            day_income = sum(
-                amount
-                for key, income in self.__income.items()
-                if key.startswith(formatted_date)  # Match keys that start with the date
-                for amount in income.values()  # Sum all amounts for the date
-            )        
 
+            for key, income in self.__income.items():
+                if key.startswith(formatted_date):  # Match keys that start with the date
+                    for x in income.items():
+                        day_income+=x[1]
             day_pointer += timedelta(days=1)                                                  # returns total rounded to nearest hundreth 
         return day_income
