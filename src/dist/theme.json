@@ -1,0 +1,260 @@
+{
+    "name_input": {
+        "font": {
+            "size": 16
+        },
+        "colours": {
+            "normal_text": "#000000",
+            "dark_bg": "#FFFFFF",  
+            "disabled_bg": "#DDDDDD",
+            "text_cursor": "#000000"
+        }
+    },
+    "email_input": {
+        "font": {
+            "size": 16
+        },
+        "colours": {
+            "normal_text": "#000000",
+            "dark_bg": "#FFFFFF",  
+            "disabled_bg": "#DDDDDD",
+            "text_cursor": "#000000"
+        }
+    },
+    "password_input": {
+        "font": {
+            "size": 16
+        },
+        "colours": {
+            "normal_text": "#000000",
+            "dark_bg": "#FFFFFF",  
+            "disabled_bg": "#DDDDDD",
+            "text_cursor": "#000000"
+        }
+    },
+    "login_button": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D"
+        }
+    },
+    "signup_button": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D"
+        }
+    },
+    "create_account_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D"
+        }
+    },
+    "dash_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D",
+            "disabled_bg": "#CFCFA5",
+            "disabled_text": "#305B3F"
+        }
+    },
+    "expenses_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D",
+            "disabled_bg": "#CFCFA5",
+            "disabled_text": "#305B3F"
+        }
+    },
+    "income_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D",
+            "disabled_bg": "#CFCFA5",
+            "disabled_text": "#305B3F"
+        }
+    },
+    "goals_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F",
+            "hovered_bg": "#253A2D",
+            "disabled_bg": "#CFCFA5",
+            "disabled_text": "#305B3F"
+        }
+    },
+    "logout_button": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "normal_bg": "#305B3F"
+        }
+    },
+    "title_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 72
+        },
+        "colours": {
+            "normal_text": "#CFCFA5"
+        }
+    },
+    "title_label_signup": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 36
+        },
+        "colours": {
+            "normal_text": "#CFCFA5"
+        }
+    },
+    "name_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 18
+        },
+        "colours": {
+            "normal_text": "#000000"
+        }
+    },
+    "email_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 18
+        },
+        "colours": {
+            "normal_text": "#000000"
+        }
+    },
+    "password_label": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 18
+        },
+        "colours": {
+            "normal_text": "#000000"
+        }
+    },
+    "return_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 16
+        },
+        "colours": {
+            "normal_text": "#E52C04"
+        }
+    },
+    "header_label": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5"
+        }
+    },
+    "module_label": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 24
+        },
+        "colours": {
+            "normal_text": "#CFCFA5"
+        }
+    },
+    "expense_item": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 20,
+            "bold": 1
+        },
+        "colours": {
+            "normal_text": "#FFB84D"
+        }
+    },
+    "income_item": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 20,
+            "bold": 1
+        },
+        "colours": {
+            "normal_text": "#FFB84D"
+        }
+    },
+    "total_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 70,
+            "bold": 1
+        },
+        "colours": {
+            "normal_text": "#FFB84D"
+        }
+    },
+    "error_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 16
+        },
+        "colours": {
+            "normal_text": "#E52C04"
+        }
+    },
+    "user_label": {
+        "font": {
+            "name": "DejaVu Sans Mono",
+            "size": 18
+        },
+        "colours": {
+            "normal_text": "#000000"
+        }
+    },
+    "experience_label": {
+        "font": {
+            "name":"DejaVu Sans Mono",
+            "size": 18
+        },
+        "colours": {
+            "normal_text": "#CFCFA5",
+            "hovered_bg": "#CFCFA5"
+        }
+    }
+}
