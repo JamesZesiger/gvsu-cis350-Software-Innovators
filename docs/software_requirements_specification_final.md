@@ -56,7 +56,7 @@ This section contains links to key documents used in the development of the  Bal
 
 [Use Case Diagram](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/artifacts/Use_Case_Diagram.png)
 
-[Gantt Chart](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/docs/Gantt_Chart.pdf)
+[Gantt Chart](https://github.com/JamesZesiger/gvsu-cis350-Software-Innovators/blob/main/artifacts/Software%20Innovators%20_%20Balance%20Buddy%20_%20Gantt%20Chart%20-%20Detailed%20Version%20V1.0%20(1).pdf)
 
 [Jira](https://software-innovators.atlassian.net/jira/software/projects/SCRUM/boards/1)
 
